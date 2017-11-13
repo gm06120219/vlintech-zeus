@@ -1,0 +1,156 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+
+  <div id='info-success-bar' class="callout callout-success" style="display:none; position: fixed; left:0; top:0; z-index:1031; width:100%;">
+    <h4>提示信息</h4>
+    <p></p>
+  </div>
+
+  <div id='info-fail-bar' class="callout callout-danger" style="display:none; position: fixed; left:0; top:0; z-index:1031; width:100%;">
+    <h4>提示信息</h4>
+    <p></p>
+  </div>
+
+  <div class="container">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        户型管理
+        <small>户型列表</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
+        <li class="active">户型管理</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="content-body">
+        <!-- TABLE: LATEST ORDERS -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">户型列表</h3>
+            <div class="box-tools">
+              <div class="input-group input-group-sm">
+                <input type="text" name="table_search" class="form-control pull-right" placeholder="户型名称 模糊搜索">
+
+                <div class="input-group-btn">
+                  <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.box-header -->
+          {$page}
+          <div class="box-body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover" id="floorplan-tab">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>户型名称</th>
+                    <th>社区名称</th>
+                    <th>编辑信息</th>
+                    <th>查看程序</th>
+                    <th>删除</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <volist name='list' id='vo'>
+                    <tr>
+                      <td>
+                        {$vo.id}
+                      </td>
+                      <td>
+                        {$vo.name}
+                      </td>
+                      <td>
+                        {$vo.community_name}
+                      </td>
+                      <td>
+                        <a href="detail?user_id={$vo.id}"><span class="btn label label-info"><i class="fa fa-edit"></i> 编辑</span></a>
+                      </td>
+                      <td>
+                        <a href="detail?user_id={$vo.id}"><span class="btn label label-success"><i class="fa fa-plus-square-o"></i> 查看</span></a>
+                      </td>
+                      <td>
+                        <span class="btn label label-danger" name='delete' rel="{$vo.id}"><i class="fa fa-trash-o"></i> 删除</span>
+                      </td>
+                    </tr>
+                  </volist>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.table-responsive -->
+          </div>
+          <!-- /.box-body -->
+          {$page}
+        </div>
+        <!-- /.box -->
+      </div>
+
+      <div class="modal modal-danger fade" id="modal-danger">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">删除用户</h4>
+              </div>
+              <div class="modal-body">
+                <p>是否确认删除此用户？</p>
+              </div>
+              <div class="modal-footer">
+                <button id="user-del-cancel" type="button" class="btn btn-outline pull-left" data-dismiss="modal">取消</button>
+                <button id="user-del-confirm" type="button" class="btn btn-outline">确认</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.container -->
+</div>
+
+<script>
+
+$("span[name='delete']").click(function(){
+  $("#modal-danger").attr('rel', $(this).attr('rel'));
+  $("#modal-danger").modal('show');
+});
+
+$("#user-del-cancel").click(function(){
+  $("#modal-danger").removeAttr('rel');
+});
+
+$("#user-del-confirm").click(function(){
+  $.post("/public/index.php/zeus/manuser/delete",{},function(result){
+    $("#modal-danger").removeAttr('rel');
+    $("#modal-danger").modal('hide');
+
+    var bar, info;
+    if (result.code == 10000) {
+      bar = $("#info-success-bar")
+      info = '删除成功';
+    } else {
+      bar = $("#info-fail-bar")
+      info = '删除失败';
+    }
+
+    // show alert info
+    bar.find('p').eq(0).text(info);
+    bar.fadeIn(1000);
+    // refresh ui
+    setTimeout(function(){
+      bar.fadeOut(500);
+      bar.find('p').eq(0).text('');
+      window.location.reload();
+    }, 1500);
+  });
+});
+</script>
