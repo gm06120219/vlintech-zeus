@@ -55,4 +55,46 @@ class Tools
         }
         return $result;
     }
+
+
+    public static function makePageUrl($prefix, $total, $page, $page_size)
+    {
+        if ($total != null && $page != null && $page_size != null) {
+            $page_num = ceil($total/$page_size);
+
+            $loop_num = 5;
+            $loop_start = 1;
+
+            if ($page_num < 5) {
+                $loop_num = $page_num;
+            } else {
+                if ($page > 3) {
+                    if ($page < $page_num - 2) {
+                        $loop_start = $page - 2;
+                    } else {
+                        $loop_start = $page_num - 4;
+                    }
+                }
+            }
+
+            $result = '<nav aria-label="Page navigation" style="text-align: center;"><ul class="pagination">';
+            $result = $result . '<li><a href="?' . $prefix . '&page=1" aria-label="Previous"><span>&laquo;</span></a></li>';
+
+            for ($i = $loop_start; $i < $loop_start + $loop_num; $i++) {
+                if ($i == $page) {
+                    $result = $result . '<li class="active"><a href="?'. $prefix . '&page=' . $i . '"><span>' . $i . '</span></a></li>';
+                } else {
+                    $result = $result . '<li><a href="?' . $prefix . '&page=' . $i . '"><span>' . $i . '</span></a></li>';
+                }
+            }
+
+            $result = $result . '<li><a href="?' . $prefix . '&page=' . $page_num . '" aria-label="Next"><span>&raquo;</span></a></li>';
+            $result = $result . '<li><span>共' . $page_num . '页</span></a></li>';
+            $result = $result . '</ul></nav>';
+        } else {
+            trace("makePage empty param");
+            return "<alert>翻页图生成失败</alert>";
+        }
+        return $result;
+    }
 }

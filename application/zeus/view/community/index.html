@@ -1,15 +1,16 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
+
   <div class="container">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        户型管理
-        <small>户型列表</small>
+        社区管理
+        <small>社区列表</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
-        <li class="active">户型管理</li>
+        <li class="active">社区管理</li>
       </ol>
     </section>
 
@@ -19,7 +20,7 @@
         <!-- TABLE: LATEST ORDERS -->
         <div class="box box-info">
           <div class="box-header with-border">
-            <h3 class="box-title">户型列表</h3>
+            <h3 class="box-title">社区列表</h3>
             <div class="box-tools">
               <div class="input-group input-group-sm">
                 <input type="text" name="table_search" class="form-control pull-right" placeholder="户型名称 模糊搜索">
@@ -38,10 +39,11 @@
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>户型名称</th>
-                    <th>社区名称</th>
-                    <th>编辑信息</th>
-                    <th>查看程序</th>
+                    <th>社区名</th>
+                    <th>开发商名</th>
+                    <th>物业公司</th>
+                    <th>社区权限</th>
+                    <th>编辑</th>
                     <th>删除</th>
                   </tr>
                 </thead>
@@ -49,22 +51,25 @@
                   <volist name='list' id='vo'>
                     <tr>
                       <td>
-                        {$vo.id}
-                      </td>
-                      <td>
-                        {$vo.name}
+                        {$vo.community_id}
                       </td>
                       <td>
                         {$vo.community_name}
                       </td>
                       <td>
-                        <a href="detail?user_id={$vo.id}"><span class="btn label label-info"><i class="fa fa-edit"></i> 编辑</span></a>
+                        {$vo.developer_name}
                       </td>
                       <td>
-                        <a href="detail?user_id={$vo.id}"><span class="btn label label-success"><i class="fa fa-plus-square-o"></i> 查看</span></a>
+                        {$vo.management_name}
                       </td>
                       <td>
-                        <span class="btn label label-danger" name='delete' rel="{$vo.id}"><i class="fa fa-trash-o"></i> 删除</span>
+                        <span class="btn label label-success" name='permission'><i class="fa fa-bookmark-o"></i> 查看</span>
+                      </td>
+                      <td>
+                        <span class="btn label label-info" name='edit'><i class="fa fa-edit"></i> 编辑</span>
+                      </td>
+                      <td>
+                        <span class="btn label label-danger" name='delete'><i class="fa fa-trash-o"></i> 删除</span>
                       </td>
                     </tr>
                   </volist>
@@ -105,41 +110,3 @@
   </div>
   <!-- /.container -->
 </div>
-
-<script>
-
-$("span[name='delete']").click(function(){
-  $("#modal-danger").attr('rel', $(this).attr('rel'));
-  $("#modal-danger").modal('show');
-});
-
-$("#user-del-cancel").click(function(){
-  $("#modal-danger").removeAttr('rel');
-});
-
-$("#user-del-confirm").click(function(){
-  $.post("/public/index.php/zeus/user/delete",{},function(result){
-    $("#modal-danger").removeAttr('rel');
-    $("#modal-danger").modal('hide');
-
-    var bar, info;
-    if (result.code == 10000) {
-      bar = $("#info-success-bar")
-      info = '删除成功';
-    } else {
-      bar = $("#info-fail-bar")
-      info = '删除失败';
-    }
-
-    // show alert info
-    bar.find('p').eq(0).text(info);
-    bar.fadeIn(1000);
-    // refresh ui
-    setTimeout(function(){
-      bar.fadeOut(500);
-      bar.find('p').eq(0).text('');
-      window.location.reload();
-    }, 1500);
-  });
-});
-</script>

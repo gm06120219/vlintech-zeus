@@ -3,7 +3,7 @@ namespace app\zeus\model;
 
 use think\Model;
 
-class Oss extends Basem
+class OssModel extends Basem
 {
     private $_id;
     private $_secret;
@@ -39,12 +39,12 @@ class Oss extends Basem
         return $result_json;
     }
 
-    # 前端调用上传文件
+    # 调用上传文件
     public function uploadFile()
     {
     }
 
-    # 前端调用查看文件列表
+    # 查看文件列表
     public function listFile()
     {
         if ($this->$_id == NULL) {

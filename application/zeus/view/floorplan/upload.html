@@ -1,0 +1,512 @@
+<!-- Generic page styles -->
+<link rel="stylesheet" href="/public/static/plugins/jquery-upload/css/style.css">
+<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+<link rel="stylesheet" href="/public/static/plugins/jquery-upload/css/jquery.fileupload.css">
+
+<!-- OSS SDK -->
+<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.4.4.min.js"></script>
+<script src="/public/static/js/oss.js"></script>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <div class="container">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        户型管理
+        <small>上传户型程序</small>
+      </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="content-body">
+
+        <!-- SELECT2 EXAMPLE -->
+        <div class="box box-default">
+          <div class="box-header with-border">
+            <h3 class="box-title">上传户型程序</h3>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>社区名称</label>
+                  <select id="community_name" class="form-control select2">
+                    <option value="{$community_id}">{$community_name}</option>
+                  </select>
+                </div>
+                <!-- /.form-group -->
+              </div>
+              <!-- /.col -->
+            </div>
+            <!-- /.row -->
+
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>户型名称</label>
+                  <input id="floorplan_name" type="text" class="form-control" placeholder="请输入户型名称 ..." value="{$floorplan_name}">
+                </div>
+                <!-- /.form-group -->
+              </div>
+              <!-- /.col -->
+            </div>
+            <!-- /.row -->
+
+            <if condition="($step eq 'update') OR ($step) eq 'add'">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <div class="col-md-3" style="line-height:34px; padding-left:0;">
+                      <label>上传程序</label>
+                      <span class="btn btn-success pull-right btn-up hide" style="margin-left:30px;">
+                        <span>放下<i class="fa fa-level-down"></i></span>
+                      </span>
+                      <span class="btn btn-default pull-right btn-down">
+                        <span>收起<i class="fa fa-level-up"></i></span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.row -->
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <div class="table-responsive">
+                      <table class="table table-hover" id="floorplan-upload-tab">
+                        <tbody>
+                          <tr>
+                            <th>
+                              类型
+                            </th>
+                            <th>
+                              选择
+                            </th>
+                            <th>
+                              文件名
+                            </th>
+                            <th>
+                              大小
+                            </th>
+                            <th>
+                              上传进度
+                            </th>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p class="text-center">CCU程序</p>
+                            </td>
+                            <td>
+                              <select id="ccu-upload-method" class="form-control select2">
+                                <option value='1'>新上传文件</option>
+                                <option value='2'>已上传文件</option>
+                              </select>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                          </tr>
+                          <tr id="ccu-program-upload">
+                            <td>
+                            </td>
+                            <td>
+                              <if condition="($step) eq 'add'">
+                                <button class="btn btn-danger btn-file">选择文件</button>
+                                <else />
+                                <button class="btn btn-file">选择文件</button>
+                              </if>
+                              <input type="file" name='ccu-program' id="ccu-program" class="input-file hide" accept="application/zip" />
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                              <div class="progress hide">
+                                <div id="ccup-pbar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">
+                                  0%
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr id="ccu-program-choice" class="hide">
+                            <td>
+                            </td>
+                            <td>
+                              <select id="ccu-choice" class="form-control select2">
+                              </select>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p class="text-center">APP配置</p>
+                            </td>
+                            <td>
+                              <if condition="($step) eq 'add'">
+                                <button class="btn btn-danger btn-file">选择文件</button>
+                                <else />
+                                <button class="btn btn-file">选择文件</button>
+                              </if>
+                              <input type="file" name='app-config' id="app-config" class="input-file hide" accept="application/zip" />
+                            </td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                              <div class="progress hide">
+                                <div id="appc-pbar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">
+                                  0%
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p class="text-center">CCU配置</p>
+                            </td>
+                            <td>
+                              <if condition="($step) eq 'add'">
+                                <button class="btn btn-danger btn-file">选择文件</button>
+                                <else />
+                                <button class="btn btn-file">选择文件</button>
+                              </if>
+                              <input type="file" name='ccu-config' id="ccu-config" class="input-file hide" accept="application/zip" />
+                            </td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                              <div class="progress hide">
+                                <div id="ccuc-pbar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">
+                                  0%
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p class="text-center">WCU程序</p>
+                            </td>
+                            <td>
+                              <button class="btn btn-default btn-file">选择文件</button>
+                              <input type="file" name='wcu-program' id="wcu-program" class="input-file hide" accept="application/zip" />
+                            </td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                              <div class="progress hide">
+                                <div id="wcu-pbar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">
+                                  0%
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p class="text-center">VCU程序</p>
+                            </td>
+                            <td>
+                              <button class="btn btn-default btn-file">选择文件</button>
+                              <input type="file" name='vcu-program' id="vcu-program" class="input-file hide" accept="application/zip" />
+                            </td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                              <div class="progress hide">
+                                <div id="vcu-pbar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">
+                                  0%
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- /.table-responsive -->
+                  </div>
+                  <!-- /.form-group -->
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+            </if>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <p class="text-center">
+                    <span id="upload" class="btn btn-info fileinput-button">
+                      <span>上传部署文件</span>
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.container -->
+</div>
+
+<script>
+  $(function() {
+    // init oss token
+    var self = this;
+    new STSToken(function(ststoken) {
+      // console.log(ststoken);
+      self.ststoken = ststoken;
+      self.oss = new VlintechOss(self.ststoken);
+    });
+
+    // init input file button click
+    $('.btn-file').click(function() {
+      $(this).next().click();
+    });
+
+    // init input file select
+    // $('input[type=file]').on('change', function(e){
+    //   console.log(e);
+    // });
+
+    $('input[type=file]').change(function(e) {
+      var file = $(this).get(0).files[0];
+      if (!file) {
+        $(this).parent().next().text('');
+        $(this).parent().next().next().text('');
+        $(this).parent().next().next().next().find('div.progress').addClass('hide');
+      } else {
+        $(this).parent().next().text(file.name);
+        $(this).parent().next().next().text(FormatSize(file.size));
+        $(this).parent().next().next().next().find('div.progress').removeClass('hide');
+      }
+    });
+
+    $('#community_name').select2();
+    $('#ccu-upload-method').select2();
+    $('#community_name').prop("disabled", true);
+    $('#floorplan_name').attr("disabled", true);
+
+    // if (getUrlParam('step') == 'add') {
+    //   $('#ccu-upload-method').prop("disabled", true);
+    // } else {
+    // }
+
+    $('#ccu-upload-method').change(function(e) {
+      if ($(this).val() == 1) {
+        console.log('select upload new file');
+        $('#ccu-program-choice').addClass('hide');
+        $('#ccu-program-upload').removeClass('hide');
+      } else if ($(this).val() == 2) {
+        console.log('select choice old file at oss');
+        $('#ccu-program-upload').addClass('hide');
+        $('#ccu-program-choice').removeClass('hide');
+        if ($('#community_name').val() == '') {
+          // TODO 修改为弹条提示
+          alert('请先选择社区');
+          $(this).val(1).trigger("change");
+        } else {
+          self.oss.ListCCUProgram($("#choice_community").val(), function(result) {
+            console.log(result);
+            $('#ccu-choice').empty().trigger("change");
+            if (!result || result.length == 0) {
+              alert('该社区此前并未上传程序');
+              $('#ccu-upload-method').val(1).trigger("change");
+            } else {
+              for (var i = 0; i < result.length; i++) {
+                $('#ccu-choice').append(new Option(result[i])).trigger("change");
+              }
+            }
+          });
+        }
+      } else {
+        // TODO
+      }
+    });
+
+    $('#upload').click(function() {
+
+      $("#upload").attr('disabled', true);
+      var ccup = $("#ccu-program").get(0).files[0];
+      var ccuc = $("#ccu-config").get(0).files[0];
+      var appc = $("#app-config").get(0).files[0];
+      var wcu = $("#wcu-program").get(0).files[0];
+      var vcu = $("#vcu-program").get(0).files[0];
+
+      if (getUrlParam('step') == 'add') {
+        if (ccup == null || ccuc == null || appc == null) {
+          alert('红色按钮为必选项，请选择文件');
+          $('#upload').attr('disabled', false);
+          return;
+        }
+      } else {
+        if (!ccup && !ccuc && !appc && !wcu && !vcu) {
+          alert('至少上传一个文件');
+          $('#upload').attr('disabled', false);
+          return;
+        }
+      }
+      try {
+
+        var p1 = new Promise((resolve, reject) => {
+          if (ccup) {
+            self.oss.Upload('测试程序/' + ccup.name, ccup,
+              function(p) {
+                return function(done) {
+                  $('#ccup-pbar').css('width', Math.floor(p * 100) + '%');
+                  $('#ccup-pbar').text(Math.floor(p * 100) + '%');
+                  done();
+                }
+              },
+              function(result) {
+                if (result.res.status == 200) {
+                  console.log('upload success: %j', result);
+                  resolve('ccup');
+                } else {
+                  console.log('upload failure: %j', result);
+                  reject('ccup');
+                }
+              });
+          } else {
+            resolve(0);
+          }
+        });
+        var p2 = new Promise((resolve, reject) => {
+          if (appc) {
+            self.oss.Upload('测试程序/' + appc.name, appc,
+              function(p) {
+                return function(done) {
+                  $('#appc-pbar').css('width', Math.floor(p * 100) + '%');
+                  $('#appc-pbar').text(Math.floor(p * 100) + '%');
+                  done();
+                }
+              },
+              function(result) {
+                if (result.res.status == 200) {
+                  console.log('upload success: %j', result);
+                  resolve('appc');
+                } else {
+                  console.log('upload failure: %j', result);
+                  reject('appc');
+                }
+              });
+          } else {
+            resolve(0);
+          }
+        });
+        var p3 = new Promise((resolve, reject) => {
+          if (ccuc) {
+            self.oss.Upload('测试程序/' + ccuc.name, ccuc,
+              function(p) {
+                return function(done) {
+                  $('#ccuc-pbar').css('width', Math.floor(p * 100) + '%');
+                  $('#ccuc-pbar').text(Math.floor(p * 100) + '%');
+                  done();
+                }
+              },
+              function(result) {
+                if (result.res.status == 200) {
+                  console.log('upload success: %j', result);
+                  resolve('ccuc');
+                } else {
+                  console.log('upload failure: %j', result);
+                  reject('ccuc');
+                }
+              });
+          } else {
+            resolve(0);
+          }
+        });
+        var p4 = new Promise((resolve, reject) => {
+          if (wcu) {
+            self.oss.Upload('测试程序/' + wcu.name, wcu,
+              function(p) {
+                return function(done) {
+                  $('#wcu-pbar').css('width', Math.floor(p * 100) + '%');
+                  $('#wcu-pbar').text(Math.floor(p * 100) + '%');
+                  done();
+                }
+              },
+              function(result) {
+                if (result.res.status == 200) {
+                  console.log('upload success: %j', result);
+                  resolve('wcu');
+                } else {
+                  console.log('upload failure: %j', result);
+                  reject('wcu');
+                }
+              });
+          } else {
+            resolve(0);
+          }
+        });
+        var p5 = new Promise((resolve, reject) => {
+          if (vcu) {
+            self.oss.Upload('测试程序/' + vcu.name, vcu,
+              function(p) {
+                return function(done) {
+                  $('#vcu-pbar').css('width', Math.floor(p * 100) + '%');
+                  $('#vcu-pbar').text(Math.floor(p * 100) + '%');
+                  done();
+                }
+              },
+              function(result) {
+                if (result.res.status == 200) {
+                  console.log('upload success: %j', result);
+                  resolve('vcu');
+                } else {
+                  console.log('upload failure: %j', result);
+                  reject('vcu');
+                }
+              });
+          } else {
+            resolve(0);
+          }
+        });
+
+        Promise.all([p1, p2, p3, p4, p5]).then(values => {
+          $("#upload").attr('disabled', false);
+          console.log('upload success');
+          alert('上传部署文件成功');
+          // TODO jump to floorplan history view
+        }).catch(errors => {
+          $("#upload").attr('disabled', false);
+          console.log('upload failure');
+          alert('上传部署文件失败，请重试');
+          window.location.reload();
+        });
+      } catch (e) {
+        console.log(e);
+      } finally {
+
+      }
+    });
+  });
+</script>

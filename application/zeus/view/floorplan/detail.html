@@ -8,7 +8,7 @@
         <if condition="$step eq 'add'">
           <small>增加户型</small>
         <elseif condition="$step eq 'edit'"/>
-          <small>更新户型</small>
+          <small>更新户型信息</small>
         <else/>
           <small>增加户型</small>
         </if>
@@ -19,7 +19,7 @@
         <if condition="$step eq 'add'">
           <li class="active">增加户型</li>
           <elseif condition="$step eq 'edit'" />
-          <li class="active">更新户型</li>
+          <li class="active">更新户型信息</li>
           <else/>
           <li class="active">增加户型</li>
         </if>
@@ -38,13 +38,14 @@
           <!-- /.box-header -->
           <div class="box-body">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label>请选择社区</label>
-                  <select id="choise-role" class="form-control select2">
-                    <option title='1'>玲珑湾</option>
-                    <option title='2'>玲珑东区</option>
-                    <option title='3'>三湘</option>
+                  <select id="choice_community" class="form-control select2">
+                    <option></option>
+                    <volist name='communities' id='vo'>
+                      <option value="{$vo.community_id}">{$vo.community_name}</option>
+                    </volist>
                   </select>
                 </div>
                 <!-- /.form-group -->
@@ -52,190 +53,29 @@
               <!-- /.col -->
             </div>
             <!-- /.row -->
+
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
-                  <label>名称</label>
-                  <input type="text" class="form-control" placeholder="请输入户型名称 ...">
+                  <label>户型名称</label>
+                  <input id="floorplan_name" type="text" class="form-control" placeholder="请输入户型名称 ...">
                 </div>
                 <!-- /.form-group -->
               </div>
               <!-- /.col -->
             </div>
             <!-- /.row -->
-          </div>
-          <!-- /.box-body -->
-          <div class="box-header with-border">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <h3 class="box-title">程序列表</h3>
-                  <button type="submit" class="btn-up btn btn-default pull-right hide">收起<i class="fa fa-level-up"></i></button>
-                  <button type="submit" class="btn-down btn btn-success pull-right">放下<i class="fa fa-level-down"></i></button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /.box-header -->
-          <div class="box-body">
+
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                    <div class="table-responsive">
-                      <table class="table table-bordered table-hover" id="user-tab">
-                        <thead>
-                          <tr>
-                            <th>版本号</th>
-                            <th>平台</th>
-                            <th>CCU程序编号</th>
-                            <th>APP配置编号</th>
-                            <th>CCU配置编号</th>
-                            <th>WCU程序编号</th>
-                            <th>VCU程序编号</th>
-                            <th>版本类型</th>
-                            <th>删除</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                      </table>
-                    </div>
-                    <!-- /.table-responsive -->
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-          </div>
-          <!-- /.box-body -->
-
-          <div class="box-header with-border">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <h3 class="box-title">上传程序</h3>
-                  <button type="submit" class="btn-up btn btn-default pull-right hide">收起<i class="fa fa-level-up"></i></button>
-                  <button type="submit" class="btn-down btn btn-success pull-right">放下<i class="fa fa-level-down"></i></button>
+                  <p class="text-center">
+                    <span id="create_floorplan" class="btn btn-default fileinput-button">
+                      <span>添加户型</span>
+                    </span>
+                  </p>
                 </div>
               </div>
-            </div>
-          </div>
-          <!-- /.box-header -->
-          <div class="box-body">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                    <div class="table-responsive">
-                      <table class="table table-striped table-hover" id="floorplan-upload-tab">
-                        <tbody>
-                          <tr>
-                            <td>
-                              CCU程序
-                            </td>
-                            <td>
-                              <div class="from-group">
-                                <label>程序来源</label>
-                                <select id="upload-role" class="form-control select2">
-                                  <option title='1'>已上传</option>
-                                  <option title='2'>新上传</option>
-                                </select>
-                              </div>
-                              <div class="from-group">
-                                <label>从已上传中选择</label>
-                                <select id="upload-role" class="form-control select2">
-                                  <option title='1'>1234567</option>
-                                  <option title='2'>2345678</option>
-                                </select>
-                              </div>
-                              <div class="from-group">
-                                <label>新上传</label>
-                                <p>
-                                  <button class="btn btn-file">选择文件</button>
-                                  <input type="file" name='ccu-program' id="ccu-program" class="input-file hide"/>
-                                  <label></label>
-                                </p>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              APP配置
-                            </td>
-                            <td>
-                              <div class="from-group">
-                                <p>
-                                  <button class="btn btn-file">选择文件</button>
-                                  <input type="file" name='app-config' id="app-config" class="input-file hide"/>
-                                  <label></label>
-                                </p>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              CCU配置
-                            </td>
-                            <td>
-                              <div class="from-group">
-                                <p>
-                                  <button class="btn btn-file">选择文件</button>
-                                  <input type="file" name='ccu-config' id="ccu-config" class="input-file hide"/>
-                                  <label></label>
-                                </p>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              WCU程序
-                            </td>
-                            <td>
-                              <div class="from-group">
-                                <p>
-                                  <button class="btn btn-file">选择文件</button>
-                                  <input type="file" name='wcu-program' id="wcu-program" class="input-file hide"/>
-                                  <label></label>
-                                </p>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              VCU程序
-                            </td>
-                            <td>
-                              <div class="from-group">
-                                <p>
-                                  <button class="btn btn-file">选择文件</button>
-                                  <input type="file" name='vcu-program' id="vcu-program" class="input-file hide"/>
-                                  <label></label>
-                                </p>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <!-- /.table-responsive -->
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-          </div>
-          <!-- /.box-body -->
-
-          <div class="box-body">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <div class="box-footer">
-                    <button type="submit" class="btn btn-default">取消</button>
-                    <button type="submit" class="btn btn-info pull-right" id="submit">添加</button>
-                  </div>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
             </div>
             <!-- /.row -->
           </div>
@@ -247,57 +87,183 @@
     <!-- /.content -->
   </div>
   <!-- /.container -->
-  <script>
-    function update_filename_label(file, label){
-      if (file) {
-        label.text(file.name);
-      } else {
-        label.text("");
+</div>
+<script>
+  /*jslint unparam: true, regexp: true */
+
+
+  $(function() {
+    // init select2
+    $('#choice_community').select2().on('change', function(e) {
+      if ($(this).val() != 0) {
+        $('.select2').parent().removeClass('has-error');
       }
-    }
-
-    $(function() {
-      $(".select2").select2();
-
-      $(".btn-up").click(function(){
-        console.log('up');
-        $(this).addClass('hide');
-        $(this).next().removeClass('hide');
-      });
-
-      $(".btn-down").click(function(){
-        console.log('down');
-        $(this).addClass('hide');
-        $(this).prev().removeClass('hide');
-      });
-
-      $(".btn-file").click(function(){
-        $(this).next().click();
-      });
-
-      $("#ccu-program").change(function(){
-        console.log(this);
-        update_filename_label(this.files[0], $(this).next());
-      });
-
-      $("#app-config").change(function(){
-        update_filename_label(this.files[0], $(this).next());
-      });
-
-      $("#submit").click(function(){
-        var ccu_program = document.getElementById('ccu-program').files[0];
-        var ccu_config = document.getElementById('ccu-config').files[0];
-        var app_config = document.getElementById('app-config').files[0];
-        var wcu_program = document.getElementById('wcu-program').files[0];
-        var vcu_program = document.getElementById('vcu-program').files[0];
-        ccu_program ? console.log(ccu_program.name) : console.log('ccu program have not update...');
-        ccu_config ? console.log(ccu_config.name) : console.log('ccu config have not update...');
-        app_config ? console.log(app_config.name) : console.log('app config have not update...');
-        wcu_program ? console.log(wcu_program.name) : console.log('wcu program have not update...');
-        vcu_program ? console.log(vcu_program.name) : console.log('vcu program have not update...');
-      });
     });
 
-  </script>
+    $('#floorplan_name').change(function(e) {
+      if ($(this).val().length != 0) {
+        $('#floorplan_name').parent().removeClass('has-error');
+      }
+    });
 
-</div>
+    $('#create_floorplan').click(function() {
+      var com_id = $('#choice_community').val();
+      var plan_name = $('#floorplan_name').val();
+      if (com_id == 0) {
+        $('.select2').parent().addClass('has-error');
+        return;
+      }
+      if (plan_name.length == 0) {
+        $('#floorplan_name').parent().addClass('has-error');
+        return;
+      }
+
+      // TODO create floorplan by api, and jump to upload file after response success
+      $.post('/public/index.php/zeus/ActionFloorplan/add', {
+        'community_id': com_id,
+        'floorplan_name': plan_name
+      }, function(data, status, jqXHR) {
+        if (status == 'success') {
+          var data_json = eval('(' + data + ')');
+          if (data_json.Rescode == 10000) {
+            console.log(data);
+            console.log(status);
+            alert('添加成功，请点击确认上传部署文件，否则户型将无法正常使用');
+            window.location.href = './upload' + '?floorplan_id=' + data_json.Data + '&step=add';
+            // TODO jump to upload file ui
+            return;
+          } else if (data_json.Rescode == 10017) {
+            alert('添加失败，缺少参数。');
+            return;
+          } else if (data_json.Rescode == 10019) {
+            alert('添加失败，该社区下已存在此户型。');
+            return;
+          } else if (data_json.Rescode == 20023) {
+            alert('添加失败，无添加户型权限。');
+            return;
+          } else {
+            alert('添加失败，错误代码：' + data_json.Rescode);
+            return;
+          }
+        }
+        console.log(data);
+        console.log(status);
+        alert('添加失败');
+      })
+    });
+    return;
+
+    /// TODO move to other code file
+    var self = this;
+    new STSToken(function(ststoken) {
+      console.log(ststoken);
+      self.ststoken = ststoken;
+      self.oss = new VlintechOss(self.ststoken);
+    });
+
+    // init community select2 style
+    // TODO choice community selector change process
+    var com_select2 = $("#choice_community").select2().on('change', function(e) {
+      console.log($(this).val());
+      $('#ccu-upload-method').val(1).trigger("change");
+      $('#ccu-choice').empty().trigger("change");
+    });
+
+    // init ccu program upload method select2 style
+    // TODO ccu program upload method choice selector change process
+    var ccu_select2 = $("#ccu-upload-method").select2().on('change', function(e) {
+      // var temp = this;
+      console.log($(this).val());
+      if ($(this).val() == 1) {
+        console.log('select upload new file');
+        $('#ccu-program-choice').addClass('hide');
+        $('#ccu-program-upload').removeClass('hide');
+      } else if ($(ccu_select2).val() == 2) {
+        console.log('select choice old file at oss');
+        $('#ccu-program-upload').addClass('hide');
+        $('#ccu-program-choice').removeClass('hide');
+        if (com_select2.val() == '') {
+          // TODO 修改为弹条提示
+          alert('请先选择社区');
+          $(this).val(1).trigger("change");
+        } else {
+          self.oss.ListCCUProgram($("#choice_community").val(), function(result) {
+            console.log(result);
+            $('#ccu-choice').empty().trigger("change");
+            if (!result || result.length == 0) {
+              alert('该社区此前并未上传程序');
+              $('#ccu-upload-method').val(1).trigger("change");
+            } else {
+              for (var i = 0; i < result.length; i++) {
+                $('#ccu-choice').append(new Option(result[i])).trigger("change");
+              }
+            }
+          });
+        }
+      } else {
+        // TODO
+      }
+    });
+
+    // $('#ccu-upload-method').on('change',function(e){
+    //   // console.log($(this).text());
+    //   if ($(this).val() == 1) {
+    //   } else {
+    //     // console.log('community select: ' + $("#choice_community").val());
+    //     if ($("#choice_community").val() == '') {
+    //       console.log('请先选择社区');
+    //       // $(this).val('1');
+    //       // $(this).attr('selected', true);
+    //       console.log($('#ccu-upload-method').find("option[value=1]"));
+    //       $('#ccu-upload-method').find("option[value=1]").attr("selected",true);
+    //     }
+    //   }
+    // });
+
+    // TODO pack down button click process
+    $(".btn-up").click(function() {
+      $(this).addClass('hide');
+      $(this).next().removeClass('hide');
+    });
+
+    // TODO pack down button click process
+    $(".btn-down").click(function() {
+      $(this).addClass('hide');
+      $(this).prev().removeClass('hide');
+    });
+
+    // choice file button click process
+    $(".btn-file").click(function() {
+      $(this).next().click();
+    });
+
+    // input change file process
+    $('.input-file').change(function(e) {
+      $(this).parent().next().text($(this).get(0).files[0].name);
+      $(this).parent().next().next().text(FormatSize($(this).get(0).files[0].size));
+      $(this).parent().next().next().next().find('div.progress').removeClass('hide');
+    });
+
+    // $("#ccu-program").change(function() {
+    //   console.log(this);
+    //   update_filename_label(this.files[0], $(this).next());
+    // });
+    //
+    // $("#app-config").change(function() {
+    //   update_filename_label(this.files[0], $(this).next());
+    // });
+
+    $("#submit").click(function() {
+      var ccu_program = document.getElementById('ccu-program').files[0];
+      var ccu_config = document.getElementById('ccu-config').files[0];
+      var app_config = document.getElementById('app-config').files[0];
+      var wcu_program = document.getElementById('wcu-program').files[0];
+      var vcu_program = document.getElementById('vcu-program').files[0];
+      ccu_program ? console.log(ccu_program.name) : console.log('ccu program have not update...');
+      ccu_config ? console.log(ccu_config.name) : console.log('ccu config have not update...');
+      app_config ? console.log(app_config.name) : console.log('app config have not update...');
+      wcu_program ? console.log(wcu_program.name) : console.log('wcu program have not update...');
+      vcu_program ? console.log(vcu_program.name) : console.log('vcu program have not update...');
+    });
+  });
+</script>

@@ -7,7 +7,7 @@
         用户管理
         <if condition="$step eq 'add'">
           <small>增加用户</small>
-        <elseif condition="$step eq 'edit'"/>
+        <elseif condition="$step eq 'update'"/>
           <small>编辑用户信息</small>
         <else/>
           <small>增加用户</small>
@@ -18,7 +18,7 @@
 
         <if condition="$step eq 'add'">
           <li class="active">增加用户</li>
-          <elseif condition="$step eq 'edit'" />
+          <elseif condition="$step eq 'update'" />
           <li class="active">编辑用户信息</li>
           <else/>
           <li class="active">增加用户</li>
@@ -37,18 +37,19 @@
           <!-- /.box-header -->
           <div class="box-body">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
+                  <!-- 0=用户, 1=社区, 2=开发商, 3=商家, 4=工程, 5=系统 -->
                   <label>请选择权限角色</label>
                   <select id="choise-role" class="form-control select2">
-                    <option title='1'>管理员</option>
-                    <option title='2'>技术支持</option>
-                    <option selected="selected" title='3'>普通用户</option>
-                    <option title='4'>开发商管理员</option>
-                    <option title='5'>物业公司管理员</option>
-                    <option title='6'>[三湘]维修师</option>
-                    <option title='7'>[三湘]高级维修师</option>
-                    <option title='8'>[三湘]管理员</option>
+                    <option value='5'>管理员</option>
+                    <option value='4'>技术支持</option>
+                    <option selected="selected" value='0'>普通用户</option>
+                    <option value='2'>开发商管理员</option>
+                    <option value='1'>物业公司管理员</option>
+                    <!-- <option value='6' style="display:none;">[三湘]维修师</option>
+                    <option value='7' style="display:none;">[三湘]高级维修师</option>
+                    <option value='8' style="display:none;">[三湘]管理员</option> -->
                   </select>
                 </div>
                 <!-- /.form-group -->
@@ -57,10 +58,14 @@
             </div>
             <!-- /.row -->
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label>手机号</label>
-                  <input type="text" class="form-control" placeholder="请输入手机号 ...">
+                  <if condition="$step eq 'add'">
+                    <input name='mobile' type="text" class="form-control" placeholder="请输入手机号 ...">
+                    <else/>
+                    <input name='mobile' type="text" class="form-control" placeholder="请输入手机号 ..." value="{$userinfo.mobile}">
+                  </if>
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -68,13 +73,17 @@
             </div>
             <!-- /.row -->
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label>用户名</label>
                   <div class="box-tools pull-right">
-                    <span class="btn label label-success" style="float: right;">从手机号复制</span>
+                    <span id='copy-username' class="btn label label-success" style="float: right;">从手机号复制</span>
                   </div>
-                  <input type="text" class="form-control" placeholder="请输入用户名 ...">
+                  <if condition="$step eq 'add'">
+                    <input name='username' type="text" class="form-control" placeholder="请输入用户名 ...">
+                    <else/>
+                    <input name='username' type="text" class="form-control" placeholder="请输入用户名 ..." value="{$userinfo.username}">
+                  </if>
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -82,32 +91,14 @@
             </div>
             <!-- /.row -->
             <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>密码</label>
-                  <input type="password" class="form-control" placeholder="请输入密码 ...">
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-            </div>
-            <!-- /.row -->
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>密码确认</label>
-                  <input type="password" class="form-control" placeholder="请再次确认密码 ...">
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-            </div>
-            <!-- /.row -->
-            <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label>昵称</label>
-                  <input type="text" class="form-control" placeholder="请输入昵称 ...">
+                  <if condition="$step eq 'add'">
+                    <input name='nickname' type="text" class="form-control" placeholder="请输入昵称 ...">
+                    <else/>
+                    <input name='nickname' type="text" class="form-control" placeholder="请输入昵称 ..." value="{$userinfo.alias}">
+                  </if>
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -115,34 +106,62 @@
             </div>
             <!-- /.row -->
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
+                <div class="form-group" id='first-password'>
+                  <label>密码</label>
+                  <input name='password' type="password" class="form-control" placeholder="请输入密码 ...">
+                </div>
+                <!-- /.form-group -->
+              </div>
+              <!-- /.col -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>密码确认</label>
+                  <input name='password2' type="password" class="form-control" placeholder="请再次确认密码 ...">
+                </div>
+                <!-- /.form-group -->
+              </div>
+              <!-- /.col -->
+            </div>
+            <!-- /.row -->
+            <div class="row" style="display: none;">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label>头像</label>
                   <div class="box-body no-padding">
                     <ul class="users-list clearfix">
                       <li>
-                        <img src="{:config('PUBLIC_DIR')}/img/user1-128x128.jpg" alt="User Image">
+                        <img src="https://{:config('domain_url')}/download/picture/sys-picture/01_app.jpg" alt="avatar-01">
                       </li>
                       <li>
-                        <img src="{:config('PUBLIC_DIR')}/img/user8-128x128.jpg" alt="User Image">
+                        <img src="https://{:config('domain_url')}/download/picture/sys-picture/02_app.jpg" alt="avatar-02">
                       </li>
                       <li>
-                        <img src="{:config('PUBLIC_DIR')}/img/user7-128x128.jpg" alt="User Image">
+                        <img src="https://{:config('domain_url')}/download/picture/sys-picture/03_app.jpg" alt="avatar-03">
                       </li>
                       <li>
-                        <img src="{:config('PUBLIC_DIR')}/img/user6-128x128.jpg" alt="User Image">
+                        <img src="https://{:config('domain_url')}/download/picture/sys-picture/04_app.jpg" alt="avatar-04">
                       </li>
                       <li>
-                        <img src="{:config('PUBLIC_DIR')}/img/user2-160x160.jpg" alt="User Image">
+                        <img src="https://{:config('domain_url')}/download/picture/sys-picture/05_app.jpg" alt="avatar-05">
                       </li>
                       <li>
-                        <img src="{:config('PUBLIC_DIR')}/img/user5-128x128.jpg" alt="User Image">
+                        <img src="https://{:config('domain_url')}/download/picture/sys-picture/06_app.jpg" alt="avatar-06">
                       </li>
                       <li>
-                        <img src="{:config('PUBLIC_DIR')}/img/user4-128x128.jpg" alt="User Image">
+                        <img src="https://{:config('domain_url')}/download/picture/sys-picture/07_app.jpg" alt="avatar-07">
                       </li>
                       <li>
-                        <img src="{:config('PUBLIC_DIR')}/img/user3-128x128.jpg" alt="User Image">
+                        <img src="https://{:config('domain_url')}/download/picture/sys-picture/08_app.jpg" alt="avatar-08">
+                      </li>
+                      <li>
+                        <img src="https://{:config('domain_url')}/download/picture/sys-picture/09_app.jpg" alt="avatar-09">
+                      </li>
+                      <li>
+                        <img src="https://{:config('domain_url')}/download/picture/sys-picture/10_app.jpg" alt="avatar-10">
                       </li>
                     </ul>
                     <!-- /.users-list -->
@@ -154,7 +173,7 @@
             </div>
             <!-- /.row -->
             <div class="row" id="choise-community-wrap">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label>请选择管辖社区</label>
                   <div class="box-body no-padding">
@@ -173,7 +192,7 @@
             </div>
             <!-- /.row -->
             <div class="row" id="choise-developer-wrap">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label>请选择管辖开发商</label>
                   <div class="box-body no-padding">
@@ -192,12 +211,17 @@
             </div>
             <!-- /.row -->
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <div class="form-group">
-                  <div class="box-footer">
-                    <button type="submit" class="btn btn-default">取消</button>
-                    <button type="submit" class="btn btn-info pull-right">添加</button>
-                  </div>
+                  <p class="text-center">
+                    <span id="submit" class="btn btn-default">
+                      <if condition="$step eq 'add'">
+                        <span>添加用户</span>
+                        <else/>
+                        <span>更新用户</span>
+                      </if>
+                    </span>
+                  </p>
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -220,11 +244,10 @@
       $("#select-developer").select2();
 
       $("#choise-role").on('select2:select', function(selection) {
-        console.log(selection.params.data.text);
-        if (selection.params.data.title == '4') {
+        if (selection.params.data.id == '4') {
           $('#choise-developer-wrap').fadeOut();
           $("#choise-community-wrap").fadeIn();
-        } else if (selection.params.data.title == '5') {
+        } else if (selection.params.data.id == '5') {
           $("#choise-community-wrap").fadeOut();
           $('#choise-developer-wrap').fadeIn();
         } else {
@@ -232,14 +255,131 @@
           $('#choise-developer-wrap').fadeOut();
         }
       });
+
+      $('.users-list').find('li').click(function() {
+        $('.users-list').find('li').removeClass('choice');
+        $(this).addClass('choice');
+      });
+
+      $("#copy-username").click(function() {
+        $('input[name="username"]').val($('input[name="mobile"]').val());
+      });
+
+      $("#submit").click(function() {
+        if (!checkMobile($('input[name="mobile"]').val())) {
+          $('input[name="mobile"]').parent().addClass('has-error');
+        } else {
+          $('input[name="mobile"]').parent().removeClass('has-error');
+        }
+
+        if (!$('input[name="username"]').val()) {
+          $('input[name="username"]').parent().addClass('has-error');
+        } else {
+          $('input[name="username"]').parent().removeClass('has-error');
+        }
+
+        var p1 = $('input[name="password"]');
+        var p2 = $('input[name="password2"]')
+        if (p1.val() == p2.val()) {
+          p1.parent().removeClass('has-error');
+          p2.parent().removeClass('has-error');
+          if ('{$step}' == 'add') {
+            if (p1.val().length == 0) {
+              p1.parent().addClass('has-error');
+            }
+            if (p2.val().length == 0) {
+              p2.parent().addClass('has-error');
+            }
+          }
+          if (p1.val().length < 6) {
+            p1.parent().addClass('has-error');
+          }
+          if (p2.val().length < 6) {
+            p2.parent().addClass('has-error');
+          }
+          if (p1.parent().hasClass('has-error') || p2.parent().hasClass('has-error') ) {
+            infoBarFail('密码不得小于6位');
+          }
+        } else {
+          $('input[name="password"]').parent().addClass('has-error');
+          $('input[name="password2"]').parent().addClass('has-error');
+          infoBarFail('两次密码输入不一致');
+        }
+
+
+        /*
+          if ($('input[name="password"]').val() == $('input[name="password2"]').val()) {
+            if ($('input[name="password2"]').val().length == 0) {
+              $('input[name="password"]').parent().addClass('has-error');
+              $('input[name="password2"]').parent().addClass('has-error');
+            } else if ($('input[name="password"]').val().length < 6) {
+              infoBarFail('密码不得小于6位', function() {
+                $('input[name="password"]').parent().addClass('has-error');
+                $('input[name="password2"]').parent().addClass('has-error');
+              });
+            } else {
+              $('input[name="password"]').parent().removeClass('has-error');
+              $('input[name="password2"]').parent().removeClass('has-error');
+            }
+          } else {
+            infoBarFail('两次密码输入不一致', function() {
+              $('input[name="password"]').parent().addClass('has-error');
+              $('input[name="password2"]').parent().addClass('has-error');
+            });
+          }
+        */
+
+        if (!$('input[name="nickname"]').val()) {
+          $('input[name="nickname"]').parent().addClass('has-error');
+        } else {
+          $('input[name="nickname"]').parent().removeClass('has-error');
+        }
+
+        // 确认检查都正确
+        if ($('.has-error').length == 0) {
+          var paramters = {
+            'username': $('input[name="username"]').val(),
+            'mobile': $('input[name="mobile"]').val(),
+            'nickname': $('input[name="nickname"]').val(),
+            'role': $('#choise-role').val(),
+          };
+
+          var url = 'user/addAction';
+          var msg_prefix = '添加用户';
+          console.log('{$step}');
+          if ('{$step}' == 'update') {
+            url = 'user/updateAction';
+            paramters.user_id = getUrlParam('user_id');
+            msg_prefix = '更新用户';
+            if ($('input[name="password"]').val()) {
+              paramters.password = $('input[name="password"]').val();
+            }
+          } else {
+            paramters.password = $('input[name="password"]').val();
+          }
+          console.log(url);
+          console.log(paramters);
+          vPost(url, paramters, function(data, status, jqXHR) {
+            if (status == 'success') {
+              console.log(data);
+              if (data.Rescode == 10000) {
+                infoBarSuccess(msg_prefix + '成功, 即将返回用户列表', function(){
+                  window.location.href = 'index.html';
+                });
+              } else {
+                infoBarFail(msg_prefix + '失败，错误代码: ' + data.Rescode, function(){
+                  window.location.reload();
+                });
+              }
+            } else {
+              infoBarFail(msg_prefix + '失败，请检查错误信息', function(){
+                window.location.reload();
+              });
+            }
+          });
+        }
+      });
     });
-
-    // TODO get data
-    // var communities = $("#select-community").select2("data");
-    // var developers = $("#select-developer").select2("data");
-    // console.log(communities);
-    // console.log(developers);
-
   </script>
 
 </div>

@@ -6,7 +6,7 @@
     <section class="content-header">
       <h1>
         用户管理
-        <small>用户列表</small>
+        <small>登录记录</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
@@ -20,11 +20,10 @@
         <!-- TABLE: LATEST ORDERS -->
         <div class="box box-info">
           <div class="box-header with-border">
-            <h3 class="box-title">用户列表</h3>
-            <div class="box-tools">
+            <h3 class="box-title">登录记录</h3>
+            <div class="box-tools" style="display: none;">
               <div class="input-group input-group-sm">
                 <input type="text" name="table_search" class="form-control pull-right" placeholder="用户名/昵称/ID 搜索">
-
                 <div class="input-group-btn" id="btn-search">
                   <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                 </div>
@@ -35,45 +34,29 @@
           {$page}
           <div class="box-body">
             <div class="table-responsive">
-              <table class="table table-bordered table-hover" id="user-tab">
+              <table class="table table-bordered table-hover">
                 <thead>
                   <tr>
                     <th>ID</th>
                     <th>用户名</th>
-                    <th>手机号</th>
                     <th>昵称</th>
-                    <th>编辑用户</th>
-                    <th>编辑住房</th>
-                    <th>删除</th>
+                    <th>登录时间</th>
                   </tr>
                 </thead>
                 <tbody>
                   <volist name='list' id='vo'>
                     <tr>
                       <td>
-                        {$vo.id}
+                        {$vo.user_id}
                       </td>
                       <td>
                         {$vo.username}
                       </td>
                       <td>
-                        {$vo.mobile}
-                      </td>
-                      <td>
                         {$vo.alias}
                       </td>
                       <td>
-                        <a href="update?user_id={$vo.id}"><span class="btn label label-success"><i class="fa fa-edit"></i> 编辑</span></a>
-                      </td>
-                      <td>
-                        <a href="detail?user_id={$vo.id}"><span class="btn label label-info"><i class="fa fa-edit"></i> 编辑</span></a>
-                      </td>
-                      <td>
-                        <a href="javascript:;" onClick="alertHref('删除用户', '您确认要删除 [ {$vo.username} | {$vo.alias} ] 这个用户吗？', 'delete?user_id={$vo.id}')">
-                          <span class="btn label label-danger">
-                            <i class="fa fa-trash"></i> 删除
-                          </span>
-                        </a>
+                        {$vo.date}
                       </td>
                     </tr>
                   </volist>
@@ -93,27 +76,9 @@
   <!-- /.container -->
 </div>
 
-<script>
-  $(function(){
-    if(getUrlParam('data')){
-      $('input[name="table_search"]').val(getUrlParam('data'));
-    }
+<script type="text/javascript">
+  $("#btn-search").click(function(){
+    window.location.href = 'userRecord?codition=' + $('input[name="table_search"]').val();
   });
 
-  // 搜索按钮
-  $('#btn-search').click(function() {
-    // console.log($('input[name="table_search"]').val().length);
-    if ($('input[name="table_search"]').val().length != 0) {
-      window.location.href = 'find.html?data=' + $('input[name="table_search"]').val();
-    }
-  });
-
-  // 搜索输入框回车键事件
-  $('input[name="table_search"]').keydown(function(e) {
-    if (e.keyCode == 13) {
-      if ($('input[name="table_search"]').val().length != 0) {
-        window.location.href = 'find.html?data=' + $('input[name="table_search"]').val();
-      }
-    }
-  });
 </script>

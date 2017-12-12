@@ -1,9 +1,0 @@
-{
-  "AccessKeyID": "LTAIpLXF3A519eCW",
-  "AccessKeySecret": "0NwbXLjIdd3dcvGuJpjaDgbRXLpVr8",
-  "RoleArn": "acs:ram::1773652787017876:role/ossreadonly",
-  "BucketName": "vlintechtesting",
-  "Endpoint": "oss-cn-hangzhou.aliyuncs.com",
-  "TokenExpireTime": "1000",
-  "PolicyFile": "policy/gm_policy.txt"
-}

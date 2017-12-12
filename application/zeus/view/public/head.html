@@ -34,8 +34,9 @@
   <link rel="stylesheet" href="{:config('PUBLIC_DIR')}/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
   <!-- Select2 -->
   <link rel="stylesheet" href="{:config('PUBLIC_DIR')}/plugins/select2/dist/css/select2.min.css">
+  <!-- <link rel="stylesheet" href="{:config('PUBLIC_DIR')}/plugins/select2-3.5.3/select2.css"> -->
   <!-- Theme style -->
-  <link rel="stylesheet" href="{:config('PUBLIC_DIR')}/plugins/adminlte/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="{:config('PUBLIC_DIR')}/plugins/adminlte/css/AdminLTE.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -52,10 +53,13 @@
 
   <!-- jQuery 3 -->
   <script src="{:config('PUBLIC_DIR')}/plugins/jquery/dist/jquery.min.js"></script>
+  <!-- jQuery UI -->
+  <script src="{:config('PUBLIC_DIR')}/plugins/jquery-ui/jquery-ui.min.js"></script>
   <!-- Bootstrap 3.3.7 -->
   <script src="{:config('PUBLIC_DIR')}/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
   <!-- Select2 -->
   <script src="{:config('PUBLIC_DIR')}/plugins/select2/dist/js/select2.full.min.js"></script>
+  <!-- <script src="{:config('PUBLIC_DIR')}/plugins/select2-3.5.3/select2.min.js"></script> -->
   <!-- InputMask -->
   <script src="{:config('PUBLIC_DIR')}/plugins/input-mask/jquery.inputmask.js"></script>
   <script src="{:config('PUBLIC_DIR')}/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
@@ -76,10 +80,46 @@
   <!-- FastClick -->
   <script src="{:config('PUBLIC_DIR')}/plugins/fastclick/lib/fastclick.js"></script>
   <!-- AdminLTE App -->
-  <script src="{:config('PUBLIC_DIR')}/js/adminlte.min.js"></script>
+  <script src="{:config('PUBLIC_DIR')}/plugins/adminlte/js/adminlte.js"></script>
   <!-- AdminLTE for demo purposes -->
   <script src="{:config('PUBLIC_DIR')}/js/demo.js"></script>
+  <!-- Vlintech tools file -->
+  <script src="{:config('PUBLIC_DIR')}/js/tools.js"></script>
+  <!-- Vlintech custom file -->
+  <script src="{:config('PUBLIC_DIR')}/js/vlintech.js"></script>
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
+
+<div id='info-success-bar' class="callout callout-success" style="display:none; position: fixed; left:0; top:0; z-index:1031; width:100%;">
+  <h4>提示信息</h4>
+  <p></p>
+</div>
+
+<div id='info-fail-bar' class="callout callout-danger" style="display:none; position: fixed; left:0; top:0; z-index:1031; width:100%;">
+  <h4>提示信息</h4>
+  <p></p>
+</div>
+
+<div class="modal modal-danger fade" id="alert-danger" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="alert-title">提示标题</h4>
+      </div>
+      <div class="modal-body">
+        <p id='alert-message'>提示信息</p>
+      </div>
+      <div class="modal-footer">
+        <button id="alert-cancel" type="button" class="btn btn-outline pull-left" data-dismiss="modal">取消</button>
+        <button id="alert-confirm" type="button" class="btn btn-outline">确认</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
